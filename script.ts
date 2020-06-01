@@ -21,14 +21,14 @@ const validateCityOrZipCode = (value: string): string | null => {
   const unixTimeStampToHumanDateFormat  = (unixTimeStamp: number): string => {
     const milliseconds: number = unixTimeStamp * 1000 
     const dateObject: Date = new Date(milliseconds)
-    const humanDateFormat: string = dateObject.toLocaleString() 
+    const humanDateFormat: string = dateObject.toLocaleString('en-US',{hour12:false})
     return humanDateFormat
   }
 
-  const makeTimeZoneString = (zone: number): string | null  => {
-    if(zone/3600 > 0)  return `+${zone/3600}`
-    else if(zone/3600 <= 0) return String(zone/3600)
-    else return null    
+ const makeTimeZoneString = (zone: number): string | undefined  => {
+    if(zone/3600 > 0) return `+${zone/3600}`
+    if(zone/3600 < 0) return String(zone/3600)
+    if(zone/3600 === 0) return ""    
   }
 
   const getCurrentWeather = async (location: string) => {
@@ -41,9 +41,9 @@ const validateCityOrZipCode = (value: string): string | null => {
     let weatherData = await fetch(url)
     let data = await weatherData.json() 
       let dateTime: string = unixTimeStampToHumanDateFormat(data.dt - data.timezone)
-      let timeZoneString: string  | null = makeTimeZoneString(data.timezone)
+      let timeZoneString: string | undefined = makeTimeZoneString(data.timezone)
           let formattedData: string = `Weather for ${data.name}, ${data.sys.country}\n 
-          at ${dateTime} UTC${timeZoneString}\n
+          at ${dateTime} local time (UTC${timeZoneString}\n
           The weather is ${data.weather[0].main}
           The temperature is currently ${Math.round(data.main.temp)}\xB0C\n
           Which feels like ${Math.round(data.main.feels_like)}\xB0C\n
@@ -59,4 +59,6 @@ for(let i = 0; i < cities.length; i++) {
   })
 }
 
-
+module.exports = { validateCityOrZipCode, 
+                   unixTimeStampToHumanDateFormat, 
+                   makeTimeZoneString }

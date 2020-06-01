@@ -57,16 +57,16 @@ var validateCityOrZipCode = function (value) {
 var unixTimeStampToHumanDateFormat = function (unixTimeStamp) {
     var milliseconds = unixTimeStamp * 1000;
     var dateObject = new Date(milliseconds);
-    var humanDateFormat = dateObject.toLocaleString();
+    var humanDateFormat = dateObject.toLocaleString('en-US', { hour12: false });
     return humanDateFormat;
 };
 var makeTimeZoneString = function (zone) {
     if (zone / 3600 > 0)
         return "+" + zone / 3600;
-    else if (zone / 3600 <= 0)
+    if (zone / 3600 < 0)
         return String(zone / 3600);
-    else
-        return null;
+    if (zone / 3600 === 0)
+        return "";
 };
 var getCurrentWeather = function (location) { return __awaiter(_this, void 0, void 0, function () {
     var BASE_URL, API_KEY, locationQueryString, url, weatherData, data, dateTime, timeZoneString, formattedData;
@@ -87,7 +87,7 @@ var getCurrentWeather = function (location) { return __awaiter(_this, void 0, vo
                 data = _a.sent();
                 dateTime = unixTimeStampToHumanDateFormat(data.dt - data.timezone);
                 timeZoneString = makeTimeZoneString(data.timezone);
-                formattedData = "Weather for " + data.name + ", " + data.sys.country + "\n \n          at " + dateTime + " UTC" + timeZoneString + "\n\n          The weather is " + data.weather[0].main + "\n          The temperature is currently " + Math.round(data.main.temp) + "\u00B0C\n\n          Which feels like " + Math.round(data.main.feels_like) + "\u00B0C\n\n          The high today will be " + Math.round(data.main.temp_max) + "\u00B0C with a low of " + Math.round(data.main.temp_min) + "\u00B0C\n\n          The humidity is " + data.main.humidity + "%";
+                formattedData = "Weather for " + data.name + ", " + data.sys.country + "\n \n          at " + dateTime + " local time (UTC" + timeZoneString + "\n\n          The weather is " + data.weather[0].main + "\n          The temperature is currently " + Math.round(data.main.temp) + "\u00B0C\n\n          Which feels like " + Math.round(data.main.feels_like) + "\u00B0C\n\n          The high today will be " + Math.round(data.main.temp_max) + "\u00B0C with a low of " + Math.round(data.main.temp_min) + "\u00B0C\n\n          The humidity is " + data.main.humidity + "%";
                 return [2 /*return*/, formattedData];
         }
     });
@@ -98,3 +98,6 @@ for (var i = 0; i < cities.length; i++) {
         console.log(res);
     });
 }
+module.exports = { validateCityOrZipCode: validateCityOrZipCode,
+    unixTimeStampToHumanDateFormat: unixTimeStampToHumanDateFormat,
+    makeTimeZoneString: makeTimeZoneString };
