@@ -69,7 +69,7 @@ var makeTimeZoneString = function (zone) {
         return "";
 };
 var getCurrentWeather = function (location) { return __awaiter(_this, void 0, void 0, function () {
-    var BASE_URL, API_KEY, locationQueryString, url, weatherData, data, dateTime, timeZoneString, formattedData;
+    var BASE_URL, API_KEY, locationQueryString, url, weatherData, data, dateTime, timeZoneString, formattedData, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -79,16 +79,24 @@ var getCurrentWeather = function (location) { return __awaiter(_this, void 0, vo
                 if (!locationQueryString)
                     return [2 /*return*/, null];
                 url = "" + BASE_URL + locationQueryString + "=" + location + "&units=metric&appid=" + API_KEY;
-                return [4 /*yield*/, fetch(url)];
+                _a.label = 1;
             case 1:
+                _a.trys.push([1, 4, , 5]);
+                return [4 /*yield*/, fetch(url)];
+            case 2:
                 weatherData = _a.sent();
                 return [4 /*yield*/, weatherData.json()];
-            case 2:
+            case 3:
                 data = _a.sent();
                 dateTime = unixTimeStampToHumanDateFormat(data.dt - data.timezone);
                 timeZoneString = makeTimeZoneString(data.timezone);
-                formattedData = "Weather for " + data.name + ", " + data.sys.country + "\n \n          at " + dateTime + " local time (UTC" + timeZoneString + "\n\n          The weather is " + data.weather[0].main + "\n          The temperature is currently " + Math.round(data.main.temp) + "\u00B0C\n\n          Which feels like " + Math.round(data.main.feels_like) + "\u00B0C\n\n          The high today will be " + Math.round(data.main.temp_max) + "\u00B0C with a low of " + Math.round(data.main.temp_min) + "\u00B0C\n\n          The humidity is " + data.main.humidity + "%";
+                formattedData = "Weather for " + data.name + ", " + data.sys.country + "\n \n            at " + dateTime + " local time (UTC" + timeZoneString + "\n\n            The weather is " + data.weather[0].main + "\n            The temperature is currently " + Math.round(data.main.temp) + "\u00B0C\n\n            Which feels like " + Math.round(data.main.feels_like) + "\u00B0C\n\n            The high today will be " + Math.round(data.main.temp_max) + "\u00B0C with a low of " + Math.round(data.main.temp_min) + "\u00B0C\n\n            The humidity is " + data.main.humidity + "%";
                 return [2 /*return*/, formattedData];
+            case 4:
+                err_1 = _a.sent();
+                alert(err_1);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); };

@@ -38,18 +38,23 @@ const validateCityOrZipCode = (value: string): string | null => {
     if(!locationQueryString) 
       return null     
     let url: string = `${BASE_URL}${locationQueryString}=${location}&units=metric&appid=${API_KEY}`
-    let weatherData = await fetch(url)
-    let data = await weatherData.json() 
-      let dateTime: string = unixTimeStampToHumanDateFormat(data.dt - data.timezone)
-      let timeZoneString: string | undefined = makeTimeZoneString(data.timezone)
-          let formattedData: string = `Weather for ${data.name}, ${data.sys.country}\n 
-          at ${dateTime} local time (UTC${timeZoneString}\n
-          The weather is ${data.weather[0].main}
-          The temperature is currently ${Math.round(data.main.temp)}\xB0C\n
-          Which feels like ${Math.round(data.main.feels_like)}\xB0C\n
-          The high today will be ${Math.round(data.main.temp_max)}\xB0C with a low of ${Math.round(data.main.temp_min)}\xB0C\n
-          The humidity is ${data.main.humidity}%`
-     return formattedData
+    try {
+      let weatherData = await fetch(url)
+      let data = await weatherData.json() 
+        let dateTime: string = unixTimeStampToHumanDateFormat(data.dt - data.timezone)
+        let timeZoneString: string | undefined = makeTimeZoneString(data.timezone)
+            let formattedData: string = `Weather for ${data.name}, ${data.sys.country}\n 
+            at ${dateTime} local time (UTC${timeZoneString}\n
+            The weather is ${data.weather[0].main}
+            The temperature is currently ${Math.round(data.main.temp)}\xB0C\n
+            Which feels like ${Math.round(data.main.feels_like)}\xB0C\n
+            The high today will be ${Math.round(data.main.temp_max)}\xB0C with a low of ${Math.round(data.main.temp_min)}\xB0C\n
+            The humidity is ${data.main.humidity}%`
+      return formattedData
+    }
+      catch(err) {
+        alert(err);
+      }
   }
 
 for(let i = 0; i < cities.length; i++) {
