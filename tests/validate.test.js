@@ -1,4 +1,4 @@
-const { validateCityOrZipCode } = require('./script');
+const { validateCityOrZipCode } = require('../script');
 
 test("Checks validity of cities data", () => {
     expect(validateCityOrZipCode("Tokyo")).toBe("q")

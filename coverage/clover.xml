@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1590999284070" clover="3.2.0">
-  <project timestamp="1590999284070" name="All files">
+<coverage generated="1591000294251" clover="3.2.0">
+  <project timestamp="1591000294251" name="All files">
     <metrics statements="107" coveredstatements="68" conditionals="95" coveredconditionals="39" methods="25" coveredmethods="14" elements="227" coveredelements="121" complexity="0" loc="107" ncloc="107" packages="1" files="2" classes="2"/>
     <file name="script.js" path="/Users/chaimochs/code/jobApps/weatherTest/script.js">
       <metrics statements="72" coveredstatements="45" conditionals="83" coveredconditionals="30" methods="20" coveredmethods="11"/>
